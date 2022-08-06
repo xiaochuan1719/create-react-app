@@ -200,8 +200,10 @@ module.exports = function (webpackEnv) {
           options: {
             sourceMap: true,
             ...(preProcessor === 'less-loader' && {
-              modifyVars,
-              javascriptEnabled: true,
+              lessOptions: {
+                modifyVars,
+                javascriptEnabled: true,
+              }
             })
           },
         },
