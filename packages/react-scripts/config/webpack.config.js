@@ -182,8 +182,10 @@ module.exports = function (webpackEnv) {
       // support antd customize theme
       const modifyVars = {};
       const lessToJs = require("less-vars-to-js");
-      const antdCustomizeThemeVariables = lessToJs(fs.readFileSync(path.resolve(paths.appSrc, 'styles/antd.customize.less'), 'utf-8'));
-      Object.assign(modifyVars, antdCustomizeThemeVariables);
+      if (fs.existsSync(path.resolve(paths.appSrc, 'styles/antd.customize.less'))) {
+        const antdCustomizeThemeVariables = lessToJs(fs.readFileSync(path.resolve(paths.appSrc, 'styles/antd.customize.less'), 'utf-8'));
+        Object.assign(modifyVars, antdCustomizeThemeVariables);
+      }
 
       loaders.push(
         {
@@ -198,8 +200,10 @@ module.exports = function (webpackEnv) {
           options: {
             sourceMap: true,
             ...(preProcessor === 'less-loader' && {
-              modifyVars,
-              javascriptEnabled: true,
+              lessOptions: {
+                modifyVars,
+                javascriptEnabled: true,
+              }
             })
           },
         },
